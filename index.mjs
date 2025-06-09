@@ -27,8 +27,8 @@ export const handler = async (event) => {
       selectedTicker,
       lstPrice
     };
-
-    const responseObject = await appendToS3JsonArray(newEntry);
+    const fileName=`${getTodayInEST(true)}.json`;
+    const responseObject = await appendToS3JsonArray(newEntry, fileName);
     return {
       statusCode: 200,
       headers: {
@@ -92,8 +92,8 @@ const createJsonFile = async (key, data) => {
   }));
 };
 
-const appendToS3JsonArray = async (newObject) => {
-  const FILE_KEY = `${getTodayInEST(true)}.json`;
+const appendToS3JsonArray = async (newObject, fileName) => {
+  const FILE_KEY = fileName;
   let dataArray = [];
 
   const exists = await checkIfFileExists(FILE_KEY);
